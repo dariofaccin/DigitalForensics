@@ -78,8 +78,8 @@ legend('Trade-off curve', 'Best \gamma');
 ylim([0 0.5]);
 
 %%
-system(sprintf('svm-train.exe -t 2 -g %f train.mat classifier.mod',g_opt));
-
+system(sprintf('svm-train.exe -t 2 -g %f train.mat classifier.mod',0.0018));
+[vector,nbf,rho,gamma] = read_libsvm_rbf('classifier.mod');
 % Test libsvm classifier 
 if ispc % check whether we are using Windows or Linux/MAC
     system(sprintf('svm-predict.exe test.mat classifier.mod output.txt'));
