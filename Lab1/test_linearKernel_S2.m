@@ -47,7 +47,7 @@ end
 
 for i=1:length(g_vec)
 	[~,~] = system(sprintf('svm-train.exe -t 2 -g %f train.mat classifier.mod',g_vec(i)));
-	[vector,nbf,rho,gamma] = read_libsvm_rbf('classifier.mod');
+	[~,nbf,~,~] = read_libsvm_rbf('classifier.mod');
 	acc_vec(i,2) = nbf;
 end
 
@@ -62,7 +62,7 @@ legend('Validation error','Support vector percentage');
 hold off;
 
 % Best trade-off between validation error and number of support vectors
-X = acc_vec(:,1)+acc_vec(:,2)/tr_size;		% Compute minimum of this curve
+X = acc_vec(:,1)+ 1.5*acc_vec(:,2)/tr_size;		% Compute minimum of this curve
 [best, idx_best] = min(X);
 g_opt = g_vec(idx_best);
 
@@ -78,7 +78,7 @@ legend('Trade-off curve', 'Best \gamma');
 ylim([0 0.5]);
 
 %%
-system(sprintf('svm-train.exe -t 2 -g %f train.mat classifier.mod',0.0018));
+system(sprintf('svm-train.exe -t 2 -g %f train.mat classifier.mod',g_opt));
 [vector,nbf,rho,gamma] = read_libsvm_rbf('classifier.mod');
 % Test libsvm classifier 
 if ispc % check whether we are using Windows or Linux/MAC

@@ -54,3 +54,4 @@ octave-workspace
 *.synctex.gz
 
 # JPG files (too large)
+*.jpg
