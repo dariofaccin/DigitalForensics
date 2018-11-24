@@ -52,3 +52,5 @@ octave-workspace
 *.mtc1
 *.out
 *.synctex.gz
+
+# JPG files (too large)
