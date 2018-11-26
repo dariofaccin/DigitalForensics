@@ -2,7 +2,7 @@
 % A.A. 2018/2019
 % Lab. experience n.2 - Camera ballistics 
 % teacher: Simone Milani (simone.milani@dei.unipd.it)
-
+set(0,'DefaultTextInterpreter','latex');
 
 clc, clear, close all
 addpath('./filter')
@@ -105,3 +105,15 @@ for i = 1:num_nat
     detection{i} %#ok<*NOPTS>
 end
 
+data_vect = zeros(num_nat,2);
+for i=1:num_nat
+	data_vect(i,1) = detection{1,i}.PCE;
+	data_vect(i,2) = detection{1,i}.log10P_FA;
+end
+
+figure()
+labels = strsplit(num2str(1:num_nat));
+plot(data_vect(:,1),data_vect(:,2),'o'); grid on;
+text(data_vect(:,1),data_vect(:,2),labels,'VerticalAlignment','bottom','HorizontalAlignment','left');
+title('PFA versus PCE');
+xlabel('$PCE$'); ylabel('$P_{FA}$');
