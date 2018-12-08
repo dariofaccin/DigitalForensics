@@ -12,8 +12,8 @@ addpath('./functions')
 %% Input directories and parameters
 
 %%% Set directories of flatfield and natural images 
-flat_img_dir = './img_flat_yle';
-nat_img_dir  = './img_nat_yle';
+flat_img_dir = './img_flat';
+nat_img_dir  = './img_nat_comp';
 
 %%% Set size of the image portion to be analyzed (in pixels)
 window_size = 512; % try 256, 512, 1024, 2048
@@ -115,12 +115,12 @@ figure()
 labels = strsplit(num2str(1:num_nat));
 semilogy(data_vect(:,1),data_vect(:,2),'o'); grid on;
 text(data_vect(:,1),data_vect(:,2),labels,'VerticalAlignment','bottom','HorizontalAlignment','left');
-title('PFA versus PCE');
+title('PFA and PCE versus Compression Ratio');
 xlabel('$PCE$'); ylabel('log $P_{FA}$');
 
 figure()
 labels = strsplit(num2str(1:num_nat));
 plot(data_vect(:,1),data_vect(:,2),'o'); grid on;
 text(data_vect(:,1),data_vect(:,2),labels,'VerticalAlignment','bottom','HorizontalAlignment','left');
-title('PFA versus PCE');
+title('PFA and PCE versus Compression Ratio');
 xlabel('$PCE$'); ylabel('$P_{FA}$');

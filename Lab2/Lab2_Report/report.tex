@@ -102,6 +102,7 @@ statistical dependencies related to proprietary CFA interpolation algorithms and
 intrinsic image regularities. These artifacts are statistically
 stable and can be considered as a signature of the camera type or even of the individual
 device.
+\clearpage
 
 \section*{Sensor imperfections}
 Imaging sensors have been shown to introduce various defects and to create noise in the
@@ -165,30 +166,171 @@ Also $\text{var}(\mathbf{\hat{K}}) \sim \sigma^2$, therefore better estimates ar
 
 \subsection*{PRNU fingerprint detection}
 
+The estimated factor $\mathbf{\hat{K}}$ contains all components that are systematically present in every image. The most important are some weak artifacts of color interpolation, onsensor signal transfer and sensor design. Such artifacts are not unique to the sensor and are shared among cameras of the same brand or cameras sharing the same imaging sensor design. The PRNU factors estimated from two different cameras may thus be slightly correlated, which would increase the false identification rate and decrease the reliability of camera identification.\\
+To suppress these periodic traces in $\mathbf{\hat{K}}$, the mean of the rows and columns of the fingerprint is set to zero, and Wiener filtering is applied in the frequency domain after the maximum likelihood estimation. These post operations increase the uniqueness of the fingerprint estimate among the same camera brand or model class.\\
+This similarity of the estimated PRNU fingerprint can be measured by normalized cross correlation between $\mathbf{W_J}$ and $\mathbf{\hat{K}J}$ as:
+\begin{equation}
+\rho = corr \left( \mathbf{W_J}, \mathbf{\hat{K}J} \right)
+\end{equation}
+If the image $\mathbf{I_J}$ is not taken by camera X, the maximum of the correlation ratio $\max\{\rho\}$ is expected to be close to zero. If the image $\mathbf{I_J}$ is taken by camera X, then the correlation should be significantly higher than zero. However, it is not possible to set a reliable detection threshold for all camera devices because of the different resolutions and sensor types.\\
+This issue has been solved using a \textit{Peak-to-Correlation Energy} (PCE) ratio:
+\begin{equation}
+\text{PCE} = \dfrac{{\rho}^2_{\text{peak}}}{\frac{1}{|s|-|\epsilon|} \sum\limits_{s\notin \epsilon} {\rho}^2_s}
+\end{equation}
+where ${\rho}_{\text{peak}}$ is the supremum of the normalized cross correlation between $\mathbf{W_J}$ and $\mathbf{\hat{K}J}$ and $s$ is the map to all entries of $\rho$. $\epsilon$ represents a small, centered region around ${\rho}_{\text{peak}}$, whereas $|s|-|\epsilon|$ is the total number of entries outside $\epsilon$.
+\clearpage
+
 \section*{Results}
-
-The \textsc{Matlab} code provided for this assignment performs the CONTINUA.\\
+The \textsc{Matlab} code provided for this assignment performs the PRNU estimation and detection.\\
 Among the returned values, the most important are the \textit{Peak-to-Correlation Energy} (PCE) and the \textit{Probability of False Alarm} (P\_FA).\\
-The Peak-to-Correlation Energy is a measure of ...\\
-Probability of False Alarm is a measure of 
+One tunable parameter is \texttt{windowsize}: this parameter allows the user to choose the span, in pixels, to consider for both the PRNU estimation and then detection. \\
+For the data set provided with the code we have 6 flat-field images on which we estimate the PRNU fingerprint and 11 images whose origin is to predict.\\
+Before running the script, we analyzed the EXIF information stored in both the flat-field and natural images. The flat-field images are taken by a \textit{LG V30 (H930)}, while the natural images are taken by five different devices: \textit{OnePlus 6T (A6013)}, \textit{OnePlus 5 (A5000)}, \textit{LG V30 (H930)}, \textit{OnePlus 6 (A6003)}, \textit{Xiaomi Mi A2 Lite}. \\
+The following Table [\ref{tab:defaultdataset}] shows the results of the code running on the provided data set:
 
+\begin{table}[H]
+	\centering
+
+	\begin{tabular}{c|c|c|c|c|c}
+	Image & Acquisition Device & PCE (512) & PCE (2048) & $P_{FA}$ (512) & $P_{FA}$ (2048) \\
+	\toprule
+	\texttt{nat\_01} & OnePlus 6T (A6013)	& 6.0638	& -1.0006 & 0.0069 & 0.8414 \\
+	\texttt{nat\_02} & OnePlus 5 (A5000) 	& 0.0892	& 0.1314 & 0.3826 & 0.8535 \\
+	\texttt{nat\_03} & LG V30 (H930) 	& 37.2846	& 681.8796	& 5.1044e-10 & 1.3036e-150\\
+	\texttt{nat\_04} & OnePlus 6 (A6003) 	& -0.1512	& 3.0514	& 0.6513 & 0.0403 \\
+	\texttt{nat\_05} & LG V30 (H930) 		& 46.7558	& 993.4452 & 4.0203e-12 & 2.3880e-218\\
+	\texttt{nat\_06} & LG V30 (H930) 	& 124.5864	& 1.3225e+03 & 3.1345e-29 & 7.2932e-290\\
+	\texttt{nat\_07} & Xiaomi Mi A2 Lite	& -4.8861	& -0.5088 & 0.9865 & 0.7622 \\
+	\texttt{nat\_08} & Xiaomi Mi A2 Lite 	& 0.0036	& 2.2319 & 0.4760 & 0.0676 \\
+	\texttt{nat\_09} & OnePlus 6T (A6013)	& -0.2413	& -0.0808 & 0.6884 & 0.6119\\
+	\texttt{nat\_10} & OnePlus 6 (A6003) 	& 0.0132	& 0.0023 & 0.4542 & 0.4808\\
+	\texttt{nat\_11} & LG V30 (H930) 		& 26.7829	& 156.8201 & 1.1382e-07 & 2.8018e-36
+	\end{tabular}
+	\caption{Results obtained for the default data set, for two parameters \texttt{windowsize}.}
+	\label{tab:defaultdataset}
+\end{table}
+
+From Table [\ref{tab:defaultdataset}] we see that the images associated with an ``high'' PCE value and ``low'' probability of false alarm are the ones which are taken by the same device used for the PRNU fingerprint estimation.\\
+Increasing the tunable parameter \texttt{windowsize} did improve the accuracy in the detection: while in the first case (512 pixels) one image (\texttt{nat\_01}) has non-negligible PCE (6.0638), in the second case (2048 pixels) it is instead negligible (-1.0006). On the other hand the main drawback is the increased complexity and therefore processing processing time increases.\\
+These results are more clear when looking at Figure [\ref{fig:defaultdataset512}] and Figure [\ref{fig:defaultdataset2048}], which present the pair $(PCE,P_{FA})$ for each image, in both linear and logarithmic scale.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{defaultdataset}
-	\caption{Results obtained for the default data set.}
-	\label{fig:defaultdataset}
+	\subfloat{
+	\includegraphics[width=0.4\textwidth]{defaultdataset512}}
+	\subfloat{
+	\includegraphics[width=0.4\textwidth]{defaultdataset512log}}
+	\caption{Results obtained for the default data set, for \texttt{windowsize=512}.}
+	\label{fig:defaultdataset512}
 \end{figure}
 
-From Figure [\ref{fig:defaultdataset}] it is possible to see which
+\begin{figure}[H]
+	\centering
+	\subfloat{
+	\includegraphics[width=0.4\textwidth]{defaultdataset2048}}
+	\subfloat{
+	\includegraphics[width=0.4\textwidth]{defaultdataset2048log}}
+	\caption{Results obtained for the default data set, for \texttt{windowsize=2048}.}
+	\label{fig:defaultdataset2048}
+\end{figure}
+
+We then repeated the previous analysis using flat-field images taken by a \textit{Canon EOS M50} and test images as before, plus two images from the incriminated camera.
+
+\begin{table}[H]
+	\centering	
+	\begin{tabular}{c|c|c|c}
+		Image			 & Acquisition Device	& PCE (512)	& $P_{FA}$ (512) \\
+		\toprule
+		\texttt{nat\_01} & OnePlus 6T (A6013)	& -0.1751	& 0.6622 \\
+		\texttt{nat\_02} & OnePlus 5 (A5000) 	& 0.0236	& 0.4389 \\
+		\texttt{nat\_03} & LG V30 (H930) 		& -3.0625	& 0.9599 \\
+		\texttt{nat\_04} & OnePlus 6 (A6003) 	& -0.8005	& 0.8145 \\
+		\texttt{nat\_05} & LG V30 (H930) 		& 1.8642	& 0.0861 \\
+		\texttt{nat\_06} & LG V30 (H930) 		& -0.0491	& 0.5876 \\
+		\texttt{nat\_07} & Xiaomi Mi A2 Lite	& -0.0687	& 0.6033 \\
+		\texttt{nat\_08} & Xiaomi Mi A2 Lite 	& 4.6016	& 0.0160 \\
+		\texttt{nat\_09} & OnePlus 6T (A6013)	& 2.0962 	& 0.0738 \\
+		\texttt{nat\_10} & OnePlus 6 (A6003) 	& 1.5389	& 0.1074 \\
+		\texttt{nat\_11} & LG V30 (H930) 		& 0.1089	& 0.3707 \\
+		\texttt{nat\_13} & Canon EOS M50		& 400.2607	& 2.4163e-89 \\
+		\texttt{nat\_13} & Canon EOS M50		& 828.0930	& 2.1049e-182
+	\end{tabular}
+	\caption{Results obtained for the modified data set, for \texttt{windowsize=512}.}
+	\label{tab:modifieddataset}
+\end{table}
+
+From Figure [\ref{fig:modifieddataset512}] we can graphically see how better the algorithm performs in this situation, despite the low value for \texttt{windowsize} (512 pixels).
+
+\begin{figure}[H]
+	\centering
+	\subfloat{
+		\includegraphics[width=0.4\textwidth]{modifieddataset512}}
+	\subfloat{
+		\includegraphics[width=0.4\textwidth]{modifieddataset512log}}
+	\caption{Results obtained for the modified data set, for \texttt{windowsize=1024}.}
+	\label{fig:modifieddataset512}
+\end{figure}
+
+The following Figure [\ref{fig:timerequired}] shows how the parameter \texttt{windowsize} affects the computational time of the PRNU estimation and detection:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{timerequired}
+	\caption{Time required for different \texttt{windowsize}.}
+	\label{fig:timerequired}
+\end{figure}
+
+Regarding the algorithm complexity, we finally use the \textit{Curve Fitting Toolbox} provided by \textsc{Matlab} to roughly estimate whether the behavior is exponential or no.\\
+The following Figure [\ref{fig:curvefitting}] shows how the software interpolated the data we have:
+\begin{figure}[H]
+	\centering
+	\subfloat[Full fitting.]{
+		\includegraphics[width=0.4\textwidth]{curvefitting}}
+	\subfloat[Zoom.]{
+		\includegraphics[width=0.4\textwidth]{curvefittingzoomed}}
+	\caption{Results of the fitting.}
+	\label{fig:curvefitting}
+\end{figure}
+
+The algorithm complexity can be modeled both as quadratic or exponential function:
+\begin{equation}
+C_{PRNU}(x) = \left( 1.373\cdot 10^{-5} \right) x^2 + 6.622
+\end{equation}
+\begin{equation}
+C_{PRNU}(x) = 5.701 e^{0.00115 x}
+\end{equation}
+where $x$ is the \texttt{windowsize}.\\
+
+Now we evaluate the detection performance using the one single image but with different compression ratios. Despite the original image is already compressed in a lossy form (JPEG standard), for the sake of the analysis we consider it as uncompressed. Therefore we would expect better performance if the original image is in an uncompressed format (as RAW).\\
+What we expect is that the PRNU detection works linearly with the quality of the image, meaning that as the image quality decreases the detection would degrade.\\
+In Figure [\ref{fig:differentquality}] the test image (\texttt{nat\_05}) versions are numbered in increasing order of compression ratio (1: original ``uncompressed'' image, 13: most compressed). 
+
+\begin{figure}[H]
+	\centering
+	\subfloat[Results in linear scale.]{
+		\includegraphics[width=0.5\textwidth]{testcr}}
+	\subfloat[Results in logarithmic scale.]{
+		\includegraphics[width=0.5\textwidth]{testcrlog}}
+	\caption{Results obtained for image \texttt{nat\_05}.}
+	\label{fig:differentquality}
+\end{figure}
 
 \begin{thebibliography}{3}
+	\bibitem{paper1}
+	Chen M., Fridrich J., Goljan M., Lukáš J.,
+	\textit{Determining Image Origin and Integrity Using Sensor Noise}.
+	2008.
+	
+	\bibitem{paper2}
+	Dirik A. E., Karaküçük A.,
+	\textit{Forensic use of photo response non-uniformity of imaging sensors and a counter method}.
+	2014.
+		
 	\bibitem{dig}
-	Dugelay J., Redi J., Taktak W.
+	Dugelay J., Redi J., Taktak W.,
 	\textit{Digital image forensics}.
 	2010.
 	
-	\bibitem{golomb}
+	\bibitem{digitalf}
 	Milani S.,
 	\textit{Digital Forensics: course lectures}.
 	2018.
