@@ -1,0 +1,169 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+
+% Useful floor and ceiling functions
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+% Argmax/Argmin notation
+\DeclareMathOperator*{\argmax}{argmax} 
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\rep}{rep} 
+% Modified margins
+\usepackage[margin=2cm]{geometry}
+% This avoids hypenation
+\hyphenpenalty=1000
+\usepackage{tikz}
+\usetikzlibrary{arrows,calc,positioning,shadows,shapes}
+\usepackage{graphicx}
+\usepackage{subfig}
+\graphicspath{{./images/}}
+
+\usepackage{float}
+\usepackage{xfrac}
+\usepackage{titling}
+\usepackage[bottom]{footmisc}
+
+%\setlength{\droptitle}{-5em}
+\usepackage{titlesec}
+
+\titleformat{\section}[hang]
+{\Large\bfseries}{C\thesection{. }}{0pt}{}
+
+\begin{document}
+
+\vspace*{1cm}
+
+\begin{center}
+\large \textsc{Università degli Studi di Padova \\ Department of Information Engineering}
+
+\rule{\linewidth}{1pt} \Huge{ \textsc{Digital Forensics Notes \\ Law Part }} \rule{\linewidth}{2pt}
+
+\end{center}
+
+\section{What is criminal law? Why is the criminal sanction afflictive? What is the difference between substantive criminal law and criminal procedural law?}
+
+Criminal Law is a system of rules that express community standards and determines whether or not they have been violated, defining the appropriate punishment. These penalties affect the some of the values protected by the Constitution (like liberty, or the dignity of a person), this is the reason why criminal law is said to be afflictive.
+
+Substantive criminal law involves the general principles that apply to all types of crime, but it also defines the specific crimes with their respective punishments; criminal procedural law instead is about the rules and standards that regulate the detection, investigation and prosecution of a crime (or how the law is enforced).
+
+\section{List the constitutional principles which concern criminal law and provide a brief explanation of their content.}
+\begin{itemize}
+	\item \textbf{principle of legality}: you can not be punished for something that is not considered to be a crime at the time you committed the act. no crime nor punishment without law. (no retrospective application of the law);
+	\item \textbf{principle of materiality}: you cannot be punished for just thinking of a crime (free expression of thought is a fundamental liberty as per our Constitution), for you to be convicted it is required that you actually perform a (materially observable) offense;
+	\item \textbf{harm principle}: for you to be punished you have to perform and act that causes harm to a legal good (i.e. something that is protected by criminal law (life, property, honour, etc)). It is not trivial to determine which legal goods deserve punishment worthiness;
+	\item \textbf{principle of culpability}: you cannot be held responsible for the acts commited by another person, you have to be blameworthy. This principle has some interesting implications: the offender must know the illegality of his act, or at least, he should have known it. In fact if it was impossible for the offender to
+	know the illegality of his act he has to be excused. This can often be used as a line of defense when talking about \textit{mala prohibita} (wrong because it's prohibited by the law), not so often when the act is a \textit{malum in se} (wrong that is naturally evil according to a civilized community).
+\end{itemize}
+
+\section{List and define the elements of crime.}
+\begin{itemize}
+	\item \textbf{actus reus}: a criminal act, intended as a voluntary muscular movement directed to the commission of a crime (action), or a failure to act when you had the duty to do so (omission). Can also consist of the natural consequences derived as the result/effect of the offender's conduct (event);
+	\item \textbf{mens rea}: there are two forms of mens rea, Intention (dolo), and Fault or neglicence (colpa). The intention can be general (when you want to carry out the the crime), and specific (which means that the offender must have a specific purpose.) Neglicence occurs when the author of the act does not want commit the crime but does so because of carelessness, imprudence, lack of skill.
+\end{itemize}
+Actus reus and mens rea must coexist. Note that criminal responsibility is not imposed on an individual if it is demonstrated that his/her criminal act is justified (necessity, self defense) or excused (under duress, mistake of law).
+
+\section{How can cybercrime be defined? What are the two basic forms of cybercrime?}
+There is not a universally accepted definition of cybercrime, we use the word cybercrime to refer to a wide range of criminal behaviors that are connected to technology.
+
+The European commission defines cybercrime as criminal acts committed using (as a tool) electronic communications networks and information systems (phishing) or against (as a target) such networks and systems (cyberterrorism, hacking).
+
+Cybercrime in a narrow sense: any illegal behavior directed by means of electronic operations that targets the security of computer systems and data.
+
+Cybercrime in a broader sense: any illegal behavior committed by means of, or in relation to, a computer system or network, including crimes such as illegal possession of information.
+
+\section{List the main types of cyber criminals and explain the importance of cyber criminology.}
+Cybercriminals most of the time do not perceive themselves as criminals, and they usually lack the perception of damages caused to the victims. They are usually non violent people and do have technical knowledge.
+
+\begin{itemize}
+	\item \textbf{children and teenagers under the age of 18}: the reason for this type if illegal behavior is mainly due to curiosity, they want to know and explore things;
+	\item \textbf{organized hackers}: have specific objectives (political ideas, fundamentalisms, hacktivism);
+	\item \textbf{professional hackers}: motivated by financial gain;
+	\item \textbf{criminals with personal motivations}: revenge, curiosity, psychopathology;
+	\item \textbf{accidental cyber criminals}: they commit illegal acts because of ignorance of the law, or by lack of skill;
+	\item \textbf{low profile cyber criminals}: real life non criminals.
+\end{itemize}
+
+\textbf{Criminology} is the scientific study of crime, including its causes (social, biological, psychological causes), of social reaction to crime, of responses by law enforcement, and methods of prevention, of the victim of the crime.
+
+It is necessary in order to evaluate the effectiveness of criminal law responses. (cyber) Criminology also allows to perform criminal profiling. (digital profiling is also a thing, identifies fingerprints and modus operandi of a user).
+
+\section{What are the risk factors and the main characteristics of cybercrime?}
+
+
+\section{What is the Budapest Convention? Provide a brief description of the different categories of cybercrime covered by the Convention.}
+The Budapest convention or the Cybercrime convention (2001) is the largest international legislative instrument against cybercrime. The aim of the convention is to harmonize:
+\begin{itemize}
+	\item substantive criminal law by criminalizing computer-(targeted/assited), content and copyright offenses;
+	\item procedural criminal law by requiring States to establish basic digital investigation powers, including	computer search and seizure.
+\end{itemize}
+
+The idea is that having a common legislative framework would help in transnational criminal matters, facilitating investigation and prosecution of cybercrimes across national borders.
+
+According to the substantial provision of the Convention, there are four categories that fall under the name of cybercrime:
+\begin{itemize}
+	\item \textbf{access offenses}: offenses against confidentiality, integrity, availability of computer data and systems.\\
+	Art.2 criminalizes the intentional access without right to the whole or part of a computer system.\\
+	Art.3 protects data privacy by criminalizing interception without rights of non public transmissions of data to or from a computer system.\\
+	Art.4 criminalizes the damaging, deletion, alteration of computer data without right.\\
+	Art.5 criminalizes the hindering without right of the functioning of a computer system by inputting/transmitting/deleting computer data.\\
+	Art.6 criminalizes the possession and distribution of "hacker tools" (malwares);
+	\item \textbf{use offenses}: computer related offenses.\\
+	Art.7 criminalizes computer related forgery, with the aim of ensuring that electronic documents have the same protection of material documents.\\
+	Art.8 criminalizes computer related frauds, i.e. causing of a loss of property to another person by any input/deletion/suppression of computer data or by any interference with the functioning computer systems;
+	\item \textbf{content related offenses}:\\
+	Art.9 criminalizes computer based child pornography and dissemination of racist or xenophobic material, threats, insults, or the denial/approval/justification of crimes against humanity;
+	\item \textbf{copyright infringements and related rights offenses}:\\
+	Art.10 criminalizes computer based infringements of intellectual property.
+\end{itemize}
+
+Computer related offenses focuses on the methods used to commit a crime; it does not focus on the object of legal protection like the other three.
+
+
+The convention does not cover new developments of cybercrime (cyberbullying, cyberstalking, revenge port); the convention does not make a clear statement of the responsibility of the ISPs.
+
+\section{Cybercrime in the Italian legal system: provide an overview of the main offenses in which digital technology is the \textit{target} of the criminal activity.}
+\begin{itemize}
+\item \textbf{Illegal access to a computer system} (art. 615-ter): there is a penalty up to 3 years of imprisonment for anyone who enters without authorization a computer (or telecommunication system) protected by ``security measure'' or who remains in the system against the implied or expressed will of whoever has the right to exclude him. The article provides some aggravating circumstances, for example when attacking systems used for public interests, or when the attack results in the destruction of the system itself.
+\item \textbf{illicit possession and diffusion of access codes to information and telecommunication system} (art. 615-quater): imprisonment up to 1 year and a fine for anyone who in order to obtain a profit for himself (or others) or cause damage to others, illegally acquires, reproduces, distributes, deliver codes, passwords, or other means to have access to a computer or telecommunication system protected by security
+measures, or provides info or instructions suitable to the above purpose. No actual damage or disruption to the system has to be caused.
+\end{itemize}
+
+Other concerns:
+\begin{itemize}
+\item interception, interruption of computer or telematic communications
+\item alteration, falsification and suppression of computer or telematic communications
+\item violation of secrecy, unauthorized disclosure of data, information, programs
+\item destruction, deletion, alteration of data, or info systems in any form.
+\end{itemize}
+
+\section{Cybercrime in the Italian legal system: provide an overview of the main offenses in which digital technology is the \textit{tool} of the criminal activity.}
+Art 640-ter punishes compute related fraud: it criminalizes the conduct of procuring oneself or others an unfair profit while causing damage to other people, by altering in anyway the functioning of a computer system,or by intervening in any manner, without permission, on data, info, or programs in a computer system. (e.g. theft of digital identity).
+\begin{itemize}
+\item \textbf{phishing}: social behavior that aims at acquiring sensitive personal information about someone's habits/life with the intent, for example, to access online financial services virtually impersonating the owner of the identity data. Phishing is a form of computer related fraud but there is not a specific criminal provision concerning its repression, it is not clear which articles apply;
+\item \textbf{computer related forgery}: art. 491-bis extends the application of the traditional material/info forgery offenses (unauthorized alteration, falsification of info/docs etc.) to the IT area.
+\end{itemize}
+
+\section{Provide a definition of cyber stalking, cyber bullying and cyber terrorism.}
+\textbf{Cyberbullying}: any form of pressure, aggression, harassment, blackmail, id theft, unlawful treatment of personal data of minors, by means of ICT.
+
+\textbf{Cyberstalking}: stalking performed using ICT (it's an aggravating circumstance), stalking is any kind of continuative harassing, threatening, persecuting behavior that causes a serious state of anxiety and fear in the victim, forces him/her to change his/her living habits, cuses him/her fear for the safety of relatives/partners or his/her own.
+
+\textbf{Cyberterrorism}: use of force or violence against persons or property to intimidate or coerce a government or its citizens in the pursuit of political, religious, social aims. Same ideas but ``applie'' to ICT, targeting banks, nuclear plants, computer systems, or using it as tool in order to disseminate terrorist contents (for lone wolves), financing, recruiting, preparation of attacks, purchasing weapons.
+
+\section{According to the Italian legal system, can ISPs be held responsible for the criminal offenses committed by users who upload or possess illegal content? Which is the leading case in the Italian jurisprudence?}
+According to Italian Law, hosting providers are not liable for the information stored, on condition that they do not have actual knowledge of illegal activity or information, or upon obtaining such knowledge (and communicating it to the competent authorities), do not act expeditiously to remove or disable access to the information content. ISPs can be held liable when they have been alerted about the illegal content by an official agency but fail to promptly remove it.
+
+In general: an ISP is not responsible for criminal offenses committed by users who upload or possess illegal content.
+
+The leading case is the ``\textbf{Google Vivi down}'' case in which 3 Google executives were charged with defamation and unlawful data processing for a video uploaded on Google Videos in which a down boy was abused by classmates, The court of cassation in 2014 stated that there is no general obligation on ISPs to control the information and data provided by third parties. In other words ISPs are not required to employ preventive monitoring of the content that users upload, this kind of control would also be impossible from a technical standpoint.
+\end{document}
